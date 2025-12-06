@@ -167,6 +167,13 @@ This project was built following structured exercises in Swedish:
 - **Del 4** - Repository architecture pattern
 - **Del 5** - Data validation and custom attributes
 - **Del 6** - Entity Framework Core with relationships
+- **Del 7** – Identity and JWT Authentication
+  - ASP.NET Identity integration
+  - User registration and login
+  - JWT token generation and validation
+  - Protecting endpoints with [Authorize]
+  - Role-based authorization (Student/Admin)
+  - Claims and custom claims in JWT
 
 See the `Övningar/` folder for detailed exercise documentation.
 

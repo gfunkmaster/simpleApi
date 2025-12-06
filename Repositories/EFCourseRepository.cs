@@ -1,6 +1,7 @@
 using SimpleApi.src.Models;
 using SimpleApi.Data;
 using Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace SimpleApi.Repositories
 {
@@ -13,17 +14,17 @@ namespace SimpleApi.Repositories
             _context = context;
         }
 
-        public List<Course> GetAll()
+        public async Task<List<Course>> GetAllAsync()
         {
-            return _context.Courses.ToList();
+            return await _context.Courses.ToListAsync();
         }
 
-        public Course? GetById(int id)
+        public async Task<Course?> GetByIdAsync(int id)
         {
-            return _context.Courses.Find(id);
+            return await _context.Courses.FindAsync(id);
         }
 
-        public Course Add(CreateCourseRequest request)
+        public async Task<Course> AddAsync(CreateCourseRequest request)
         {
             var course = new Course
             {
@@ -31,34 +32,34 @@ namespace SimpleApi.Repositories
                 Description = request.Description
             };
             _context.Courses.Add(course);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return course;
         }
 
-        public Course? Update(int id, CreateCourseRequest updatedRequest)
+        public async Task<Course?> UpdateAsync(int id, CreateCourseRequest updatedRequest)
         {
-            var course = _context.Courses.Find(id);
+            var course = await _context.Courses.FindAsync(id);
             if (course == null) return null;
 
             course.Title = updatedRequest.Title;
             course.Description = updatedRequest.Description;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return course;
         }
 
-        public Course? Patch(int id, CreateCourseRequest request)
+        public async Task<Course?> PatchAsync(int id, CreateCourseRequest request)
         {
             // Samma som Update för nu
-            return Update(id, request);
+            return await UpdateAsync(id, request);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var course = _context.Courses.Find(id);
+            var course = await _context.Courses.FindAsync(id);
             if (course == null) return false;
 
             _context.Courses.Remove(course);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
     }

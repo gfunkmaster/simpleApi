@@ -4,11 +4,11 @@ namespace Repositories.Interfaces
 {
     public interface ICourseRepository
     {
-        List<Course> GetAll();
-        Course? GetById(int id);
-        Course Add(CreateCourseRequest request);
-        Course? Update(int id, CreateCourseRequest request);
-        Course? Patch(int id, CreateCourseRequest request);
-        bool Delete(int id);
+        Task<List<Course>> GetAllAsync();
+        Task<Course?> GetByIdAsync(int id);
+        Task<Course> AddAsync(CreateCourseRequest request);
+        Task<Course?> UpdateAsync(int id, CreateCourseRequest request);
+        Task<Course?> PatchAsync(int id, CreateCourseRequest request);
+        Task<bool> DeleteAsync(int id);
     }
 }

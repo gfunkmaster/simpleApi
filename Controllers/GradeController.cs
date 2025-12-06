@@ -16,15 +16,16 @@ namespace SimpleApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Grade>> GetAllGrades()
+        public async Task<ActionResult<List<Grade>>> GetAllGrades()
         {
-            return Ok(_gradeService.GetAll());
+            var grades = await _gradeService.GetAllAsync();
+            return Ok(grades);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Grade> GetGrade(int id)
+        public async Task<ActionResult<Grade>> GetGrade(int id)
         {
-            var grade = _gradeService.GetById(id);
+            var grade = await _gradeService.GetByIdAsync(id);
             if (grade != null)
             {
                 return Ok(grade);
@@ -36,7 +37,7 @@ namespace SimpleApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Grade> CreateGrade([FromBody] CreateGradeRequest request)
+        public async Task<ActionResult<Grade>> CreateGrade([FromBody] CreateGradeRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -45,7 +46,7 @@ namespace SimpleApi.Controllers
 
             try
             {
-                var newGrade = _gradeService.Add(request);
+                var newGrade = await _gradeService.AddAsync(request);
                 return CreatedAtAction(nameof(GetGrade), new { id = newGrade.Id }, newGrade);
             }
             catch (ArgumentException ex)
@@ -55,23 +56,23 @@ namespace SimpleApi.Controllers
         }
 
         [HttpGet("student/{studentId}")]
-        public ActionResult<List<Grade>> GetGradesByStudent(int studentId)
+        public async Task<ActionResult<List<Grade>>> GetGradesByStudent(int studentId)
         {
-            var grades = _gradeService.GetGradesByStudent(studentId);
+            var grades = await _gradeService.GetGradesByStudentAsync(studentId);
             return Ok(grades);
         }
 
         [HttpGet("courseinstance/{courseInstanceId}")]
-        public ActionResult<List<Grade>> GetGradesByCourseInstance(int courseInstanceId)
+        public async Task<ActionResult<List<Grade>>> GetGradesByCourseInstance(int courseInstanceId)
         {
-            var grades = _gradeService.GetGradesByCourseInstance(courseInstanceId);
+            var grades = await _gradeService.GetGradesByCourseInstanceAsync(courseInstanceId);
             return Ok(grades);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteGrade(int id)
+        public async Task<ActionResult> DeleteGrade(int id)
         {
-            var deleted = _gradeService.Delete(id);
+            var deleted = await _gradeService.DeleteAsync(id);
             if (!deleted)
                 return NotFound();
             return NoContent();

@@ -1,6 +1,7 @@
 
 
 using SimpleApi.src.Models;
+using Microsoft.AspNetCore.Identity;
 using Services;
 using Repositories.Interfaces;
 using Repositories;
@@ -12,6 +13,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ApplicationDbContext> (options => 
     options.UseInMemoryDatabase("SimpleApiDb"));
+builder.Services.AddDbContext<IdentityAppDbContext>(options =>
+    options.UseInMemoryDatabase("SimpleApiDb"));
+builder.Services.AddIdentityApiEndpoints<IdentityUser>(options =>
+{
+    options.Password.RequiredLength = 6;
+    options.Password.RequireDigit = true;
+    options.Password.RequireNonAlphanumeric = true;
+
+    options.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<IdentityAppDbContext>();
+
+builder.Services.AddAuthorization();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,6 +45,15 @@ builder.Services.AddScoped<IGradeRepository, EFGradeRepository>();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.EnsureCreated();
+
+    var identityDbContext = scope.ServiceProvider.GetRequiredService<IdentityAppDbContext>();
+    identityDbContext.Database.EnsureCreated();    
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -41,8 +63,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
+app.MapIdentityApi<IdentityUser>();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
+
+
+
 
 app.Run();
 

@@ -14,26 +14,25 @@ namespace SimpleApi.Repositories
             _context = context;
         }
 
-        public List<CourseInstance> GetAll()
+        public async Task<List<CourseInstance>> GetAllAsync()
         {
-            return _context.CourseInstances
-                .Include(ci => ci.Course) // Inkludera Course-information
-                .Include(ci => ci.EnrolledStudents) // Inkludera enrolled students
-                .ToList();
-        }
-
-        public CourseInstance? GetById(int id)
-        {
-            return _context.CourseInstances
+            return await _context.CourseInstances
                 .Include(ci => ci.Course)
-                .Include(ci => ci.EnrolledStudents) // Inkludera enrolled students
-                .FirstOrDefault(ci => ci.Id == id);
+                .Include(ci => ci.EnrolledStudents)
+                .ToListAsync();
         }
 
-        public CourseInstance Add(CreateCourseInstanceRequest request)
+        public async Task<CourseInstance?> GetByIdAsync(int id)
         {
-            // Kontrollera att kursen finns
-            var course = _context.Courses.Find(request.CourseId);
+            return await _context.CourseInstances
+                .Include(ci => ci.Course)
+                .Include(ci => ci.EnrolledStudents)
+                .FirstOrDefaultAsync(ci => ci.Id == id);
+        }
+
+        public async Task<CourseInstance> AddAsync(CreateCourseInstanceRequest request)
+        {
+            var course = await _context.Courses.FindAsync(request.CourseId);
             if (course == null) throw new ArgumentException("Course not found");
 
             var courseInstance = new CourseInstance
@@ -44,87 +43,82 @@ namespace SimpleApi.Repositories
             };
 
             _context.CourseInstances.Add(courseInstance);
-            _context.SaveChanges();
-            
-            // Ladda relationen efter Save
-            return _context.CourseInstances
+            await _context.SaveChangesAsync();
+
+            return await _context.CourseInstances
                 .Include(ci => ci.Course)
                 .Include(ci => ci.EnrolledStudents)
-                .First(ci => ci.Id == courseInstance.Id);
+                .FirstAsync(ci => ci.Id == courseInstance.Id);
         }
 
-        public CourseInstance? Update(int id, CreateCourseInstanceRequest updatedRequest)
+        public async Task<CourseInstance?> UpdateAsync(int id, CreateCourseInstanceRequest updatedRequest)
         {
-            var courseInstance = _context.CourseInstances.Find(id);
+            var courseInstance = await _context.CourseInstances.FindAsync(id);
             if (courseInstance == null) return null;
 
-            // Kontrollera att den nya kursen finns om CourseId ändras
             if (courseInstance.CourseId != updatedRequest.CourseId)
             {
-                var newCourse = _context.Courses.Find(updatedRequest.CourseId);
+                var newCourse = await _context.Courses.FindAsync(updatedRequest.CourseId);
                 if (newCourse == null) return null;
                 courseInstance.CourseId = updatedRequest.CourseId;
             }
 
             courseInstance.StartDate = updatedRequest.StartDate;
             courseInstance.EndDate = updatedRequest.EndDate;
-            
-            _context.SaveChanges();
-            
-            // Returnera med inkluderade relationer
-            return _context.CourseInstances
+
+            await _context.SaveChangesAsync();
+
+            return await _context.CourseInstances
                 .Include(ci => ci.Course)
                 .Include(ci => ci.EnrolledStudents)
-                .First(ci => ci.Id == id);
+                .FirstAsync(ci => ci.Id == id);
         }
 
-        public CourseInstance? Patch(int id, CreateCourseInstanceRequest patchRequest)
+        public async Task<CourseInstance?> PatchAsync(int id, CreateCourseInstanceRequest patchRequest)
         {
-            // Samma som Update för nu
-            return Update(id, patchRequest);
+            return await UpdateAsync(id, patchRequest);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var courseInstance = _context.CourseInstances.Find(id);
+            var courseInstance = await _context.CourseInstances.FindAsync(id);
             if (courseInstance == null) return false;
 
             _context.CourseInstances.Remove(courseInstance);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public bool EnrollStudent(int courseInstanceId, int studentId)
+        public async Task<bool> EnrollStudentAsync(int courseInstanceId, int studentId)
         {
-            var courseInstance = _context.CourseInstances
+            var courseInstance = await _context.CourseInstances
                 .Include(ci => ci.EnrolledStudents)
-                .FirstOrDefault(ci => ci.Id == courseInstanceId);
-                
-            var student = _context.Students.Find(studentId);
-            
+                .FirstOrDefaultAsync(ci => ci.Id == courseInstanceId);
+
+            var student = await _context.Students.FindAsync(studentId);
+
             if (courseInstance == null || student == null) return false;
-            
-            // Kontrollera att studenten inte redan är enrollad
+
             if (courseInstance.EnrolledStudents.Any(s => s.Id == studentId)) return false;
-            
+
             courseInstance.EnrolledStudents.Add(student);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
 
-        public bool UnenrollStudent(int courseInstanceId, int studentId)
+        public async Task<bool> UnenrollStudentAsync(int courseInstanceId, int studentId)
         {
-            var courseInstance = _context.CourseInstances
+            var courseInstance = await _context.CourseInstances
                 .Include(ci => ci.EnrolledStudents)
-                .FirstOrDefault(ci => ci.Id == courseInstanceId);
-                
+                .FirstOrDefaultAsync(ci => ci.Id == courseInstanceId);
+
             if (courseInstance == null) return false;
-            
+
             var student = courseInstance.EnrolledStudents.FirstOrDefault(s => s.Id == studentId);
             if (student == null) return false;
-            
+
             courseInstance.EnrolledStudents.Remove(student);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
     }

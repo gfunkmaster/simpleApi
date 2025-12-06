@@ -14,44 +14,44 @@ namespace Services
             _courseInstanceRepository = courseInstanceRepository;
         }
 
-        public List<CourseInstance> GetAll()
+        public async Task<List<CourseInstance>> GetAllAsync()
         {
-            return _courseInstanceRepository.GetAll();
+            return await _courseInstanceRepository.GetAllAsync();
         }
 
-        public CourseInstance? GetById(int id)
+        public async Task<CourseInstance?> GetByIdAsync(int id)
         {
-            return _courseInstanceRepository.GetById(id);
+            return await _courseInstanceRepository.GetByIdAsync(id);
         }
 
-        public CourseInstance Add(CreateCourseInstanceRequest request)
+        public async Task<CourseInstance> AddAsync(CreateCourseInstanceRequest request)
         {
-            return _courseInstanceRepository.Add(request);
+            return await _courseInstanceRepository.AddAsync(request);
         }
 
-        public CourseInstance? Update(int id, CreateCourseInstanceRequest updatedRequest)
+        public async Task<CourseInstance?> UpdateAsync(int id, CreateCourseInstanceRequest updatedRequest)
         {
-            return _courseInstanceRepository.Update(id, updatedRequest);
+            return await _courseInstanceRepository.UpdateAsync(id, updatedRequest);
         }
 
-        public CourseInstance? Patch(int id, CreateCourseInstanceRequest patchRequest)
+        public async Task<CourseInstance?> PatchAsync(int id, CreateCourseInstanceRequest patchRequest)
         {
-            return _courseInstanceRepository.Patch(id, patchRequest);
+            return await _courseInstanceRepository.PatchAsync(id, patchRequest);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            return _courseInstanceRepository.Delete(id);
+            return await _courseInstanceRepository.DeleteAsync(id);
         }
 
-        public bool EnrollStudent(int courseInstanceId, int studentId)
+        public async Task<bool> EnrollStudentAsync(int courseInstanceId, int studentId)
         {
-            return _courseInstanceRepository.EnrollStudent(courseInstanceId, studentId);
+            return await _courseInstanceRepository.EnrollStudentAsync(courseInstanceId, studentId);
         }
 
-        public bool UnenrollStudent(int courseInstanceId, int studentId)
+        public async Task<bool> UnenrollStudentAsync(int courseInstanceId, int studentId)
         {
-            return _courseInstanceRepository.UnenrollStudent(courseInstanceId, studentId);
+            return await _courseInstanceRepository.UnenrollStudentAsync(courseInstanceId, studentId);
         }
     }
 }

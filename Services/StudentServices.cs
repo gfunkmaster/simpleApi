@@ -6,7 +6,6 @@ namespace Services
 {
     public class StudentServices
     {
- 
         private readonly IStudentRepository _studentRepository;
 
         public StudentServices(IStudentRepository studentRepository)
@@ -14,36 +13,34 @@ namespace Services
             _studentRepository = studentRepository;
         }
 
-
-        public List<Student> GetAllStudents()
+        public async Task<List<Student>> GetAllStudentsAsync()
         {
-            return _studentRepository.GetAllStudents();
+            return await _studentRepository.GetAllStudentsAsync();
         }
 
-        public Student? GetStudentById(int id)
+        public async Task<Student?> GetStudentByIdAsync(int id)
         {
-            return _studentRepository.GetStudentById(id);
+            return await _studentRepository.GetStudentByIdAsync(id);
         }
 
-        public Student CreateStudent(CreateStudentRequest request)
+        public async Task<Student> CreateStudentAsync(CreateStudentRequest request)
         {
-            return _studentRepository.CreateStudent(request);
+            return await _studentRepository.CreateStudentAsync(request);
         }
 
-        public Student? UpdateStudent(int id, CreateStudentRequest updatedRequest)
+        public async Task<Student?> UpdateStudentAsync(int id, CreateStudentRequest updatedRequest)
         {
-            return _studentRepository.UpdateStudent(id, updatedRequest);
+            return await _studentRepository.UpdateStudentAsync(id, updatedRequest);
         }
 
-        public Student? PatchStudent(int id, Dictionary<string, string> updates)
+        public async Task<Student?> PatchStudentAsync(int id, Dictionary<string, string> updates)
         {
-            return _studentRepository.PatchStudent(id, updates);
+            return await _studentRepository.PatchStudentAsync(id, updates);
         }
 
-        public bool DeleteStudent(int id)
+        public async Task<bool> DeleteStudentAsync(int id)
         {
-            return _studentRepository.DeleteStudent(id);
+            return await _studentRepository.DeleteStudentAsync(id);
         }
-
     }
 }

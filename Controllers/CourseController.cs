@@ -16,15 +16,16 @@ namespace SimpleApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Course>> GetAllCourses()
+        public async Task<ActionResult<List<Course>>> GetAllCourses()
         {
-            return Ok(_courseService.GetAll());
+            var courses = await _courseService.GetAllAsync();
+            return Ok(courses);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Course> GetCourseById(int id)
+        public async Task<ActionResult<Course>> GetCourseById(int id)
         {
-            var course = _courseService.GetAll().FirstOrDefault(c => c.Id == id);
+            var course = await _courseService.GetByIdAsync(id);
             if(course != null)
             {
                 return Ok(course);
@@ -36,40 +37,40 @@ namespace SimpleApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Course> CreateCourse([FromBody] CreateCourseRequest request)
+        public async Task<ActionResult<Course>> CreateCourse([FromBody] CreateCourseRequest request)
         {
             if(!ModelState.IsValid)
             {
                 return ValidationProblem(ModelState);
             }
-            var newCourse = _courseService.Add(request);
+            var newCourse = await _courseService.AddAsync(request);
             return CreatedAtAction(nameof(GetCourseById), new { id = newCourse.Id }, newCourse);
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Course> UpdateCourse(int id, [FromBody] CreateCourseRequest request)
+        public async Task<ActionResult<Course>> UpdateCourse(int id, [FromBody] CreateCourseRequest request)
         {
             if(string.IsNullOrEmpty(request.Title) || string.IsNullOrEmpty(request.Description))
             {
                 return BadRequest("Title and Description are required");
             }
-            var updated = _courseService.Update(id, request);
+            var updated = await _courseService.UpdateAsync(id, request);
             if (updated == null) return NotFound();
             return Ok(updated);
         }
 
         [HttpPatch("{id}")]
-        public ActionResult<Course> PatchCourse(int id, [FromBody] CreateCourseRequest request)
+        public async Task<ActionResult<Course>> PatchCourse(int id, [FromBody] CreateCourseRequest request)
         {
-            var patched = _courseService.Patch(id, request);
+            var patched = await _courseService.PatchAsync(id, request);
             if (patched == null) return NotFound();
             return Ok(patched);
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteCourse(int id)
+        public async Task<ActionResult> DeleteCourse(int id)
         {
-            var deleted = _courseService.Delete(id);
+            var deleted = await _courseService.DeleteAsync(id);
             if (!deleted) return NotFound();
             return NoContent();
         }

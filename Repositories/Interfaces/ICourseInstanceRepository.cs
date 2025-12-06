@@ -4,13 +4,13 @@ namespace Repositories.Interfaces
 {
     public interface ICourseInstanceRepository
     {
-        List<CourseInstance> GetAll();
-        CourseInstance? GetById(int id);
-        CourseInstance Add(CreateCourseInstanceRequest request);
-        CourseInstance? Update(int id, CreateCourseInstanceRequest updatedRequest);
-        CourseInstance? Patch(int id, CreateCourseInstanceRequest patchRequest);
-        bool Delete(int id);
-        bool EnrollStudent(int courseInstanceId, int studentId);
-        bool UnenrollStudent(int courseInstanceId, int studentId);
+        Task<List<CourseInstance>> GetAllAsync();
+        Task<CourseInstance?> GetByIdAsync(int id);
+        Task<CourseInstance> AddAsync(CreateCourseInstanceRequest request);
+        Task<CourseInstance?> UpdateAsync(int id, CreateCourseInstanceRequest updatedRequest);
+        Task<CourseInstance?> PatchAsync(int id, CreateCourseInstanceRequest patchRequest);
+        Task<bool> DeleteAsync(int id);
+        Task<bool> EnrollStudentAsync(int courseInstanceId, int studentId);
+        Task<bool> UnenrollStudentAsync(int courseInstanceId, int studentId);
     }
 }

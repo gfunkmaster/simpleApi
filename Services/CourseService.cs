@@ -14,34 +14,34 @@ namespace Services
             _courseRepository = courseRepository;
         }
 
-        public List<Course> GetAll()
+        public async Task<List<Course>> GetAllAsync()
         {
-            return _courseRepository.GetAll();
+            return await _courseRepository.GetAllAsync();
         }
 
-        public Course? GetById(int id)
+        public async Task<Course?> GetByIdAsync(int id)
         {
-            return _courseRepository.GetById(id);
+            return await _courseRepository.GetByIdAsync(id);
         }
 
-        public Course Add(CreateCourseRequest request)
+        public async Task<Course> AddAsync(CreateCourseRequest request)
         {
-            return _courseRepository.Add(request);
+            return await _courseRepository.AddAsync(request);
         }
 
-        public Course? Update(int id, CreateCourseRequest request)
+        public async Task<Course?> UpdateAsync(int id, CreateCourseRequest request)
         {
-            return _courseRepository.Update(id, request);
+            return await _courseRepository.UpdateAsync(id, request);
         }
 
-        public Course? Patch(int id, CreateCourseRequest request)
+        public async Task<Course?> PatchAsync(int id, CreateCourseRequest request)
         {
-            return _courseRepository.Patch(id, request);
+            return await _courseRepository.PatchAsync(id, request);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            return _courseRepository.Delete(id);
+            return await _courseRepository.DeleteAsync(id);
         }
     }
 }

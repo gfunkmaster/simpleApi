@@ -12,34 +12,34 @@ namespace Services
             _gradeRepository = gradeRepository;
         }
 
-        public List<Grade> GetAll()
+        public async Task<List<Grade>> GetAllAsync()
         {
-            return _gradeRepository.GetAll();
+            return await _gradeRepository.GetAllAsync();
         }
 
-        public Grade? GetById(int id)
+        public async Task<Grade?> GetByIdAsync(int id)
         {
-            return _gradeRepository.GetById(id);
+            return await _gradeRepository.GetByIdAsync(id);
         }
 
-        public Grade Add(CreateGradeRequest request)
+        public async Task<Grade> AddAsync(CreateGradeRequest request)
         {
-            return _gradeRepository.Add(request);
+            return await _gradeRepository.AddAsync(request);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            return _gradeRepository.Delete(id);
+            return await _gradeRepository.DeleteAsync(id);
         }
 
-        public List<Grade> GetGradesByStudent(int studentId)
+        public async Task<List<Grade>> GetGradesByStudentAsync(int studentId)
         {
-            return _gradeRepository.GetGradesByStudent(studentId);
+            return await _gradeRepository.GetGradesByStudentAsync(studentId);
         }
 
-        public List<Grade> GetGradesByCourseInstance(int courseInstanceId)
+        public async Task<List<Grade>> GetGradesByCourseInstanceAsync(int courseInstanceId)
         {
-            return _gradeRepository.GetGradesByCourseInstance(courseInstanceId);
+            return await _gradeRepository.GetGradesByCourseInstanceAsync(courseInstanceId);
         }
     }
 }

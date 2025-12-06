@@ -4,11 +4,11 @@ namespace Repositories.Interfaces
 {
     public interface IGradeRepository
     {
-        List<Grade> GetAll();
-        Grade? GetById(int id);
-        Grade Add(CreateGradeRequest request);
-        bool Delete(int id);
-        List<Grade> GetGradesByStudent(int studentId);
-        List<Grade> GetGradesByCourseInstance(int courseInstanceId);
+        Task<List<Grade>> GetAllAsync();
+        Task<Grade?> GetByIdAsync(int id);
+        Task<Grade> AddAsync(CreateGradeRequest request);
+        Task<bool> DeleteAsync(int id);
+        Task<List<Grade>> GetGradesByStudentAsync(int studentId);
+        Task<List<Grade>> GetGradesByCourseInstanceAsync(int courseInstanceId);
     }
 }

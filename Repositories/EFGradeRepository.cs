@@ -14,32 +14,30 @@ namespace SimpleApi.Repositories
             _context = context;
         }
 
-        public List<Grade> GetAll()
+        public async Task<List<Grade>> GetAllAsync()
         {
-            return _context.Grades
+            return await _context.Grades
                 .Include(g => g.Student)
                 .Include(g => g.CourseInstance)
                     .ThenInclude(ci => ci.Course)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Grade? GetById(int id)
+        public async Task<Grade?> GetByIdAsync(int id)
         {
-            return _context.Grades
+            return await _context.Grades
                 .Include(g => g.Student)
                 .Include(g => g.CourseInstance)
                     .ThenInclude(ci => ci.Course)
-                .FirstOrDefault(g => g.Id == id);
+                .FirstOrDefaultAsync(g => g.Id == id);
         }
 
-        public Grade Add(CreateGradeRequest request)
+        public async Task<Grade> AddAsync(CreateGradeRequest request)
         {
-            // Kontrollera att Student finns
-            var student = _context.Students.Find(request.StudentId);
+            var student = await _context.Students.FindAsync(request.StudentId);
             if (student == null) throw new ArgumentException("Student not found");
 
-            // Kontrollera att CourseInstance finns
-            var courseInstance = _context.CourseInstances.Find(request.CourseInstanceId);
+            var courseInstance = await _context.CourseInstances.FindAsync(request.CourseInstanceId);
             if (courseInstance == null) throw new ArgumentException("CourseInstance not found");
 
             var grade = new Grade
@@ -50,43 +48,42 @@ namespace SimpleApi.Repositories
             };
 
             _context.Grades.Add(grade);
-            _context.SaveChanges();
-            
-            // Returnera med inkluderade relationer
-            return _context.Grades
+            await _context.SaveChangesAsync();
+
+            return await _context.Grades
                 .Include(g => g.Student)
                 .Include(g => g.CourseInstance)
                     .ThenInclude(ci => ci.Course)
-                .First(g => g.Id == grade.Id);
+                .FirstAsync(g => g.Id == grade.Id);
         }
 
-        public List<Grade> GetGradesByStudent(int studentId)
+        public async Task<List<Grade>> GetGradesByStudentAsync(int studentId)
         {
-            return _context.Grades
+            return await _context.Grades
                 .Include(g => g.Student)
                 .Include(g => g.CourseInstance)
                     .ThenInclude(ci => ci.Course)
                 .Where(g => g.Student.Id == studentId)
-                .ToList();
+                .ToListAsync();
         }
 
-        public List<Grade> GetGradesByCourseInstance(int courseInstanceId)
+        public async Task<List<Grade>> GetGradesByCourseInstanceAsync(int courseInstanceId)
         {
-            return _context.Grades
+            return await _context.Grades
                 .Include(g => g.Student)
                 .Include(g => g.CourseInstance)
                     .ThenInclude(ci => ci.Course)
                 .Where(g => g.CourseInstance.Id == courseInstanceId)
-                .ToList();
+                .ToListAsync();
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var grade = _context.Grades.Find(id);
+            var grade = await _context.Grades.FindAsync(id);
             if (grade == null) return false;
 
             _context.Grades.Remove(grade);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return true;
         }
     }

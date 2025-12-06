@@ -17,15 +17,16 @@ namespace SimpleApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<CourseInstance>> GetAllCourseInstances()
+        public async Task<ActionResult<List<CourseInstance>>> GetAllCourseInstances()
         {
-            return Ok(_courseInstanceService.GetAll());
+            var instances = await _courseInstanceService.GetAllAsync();
+            return Ok(instances);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CourseInstance> GetCourseInstance(int id)
+        public async Task<ActionResult<CourseInstance>> GetCourseInstance(int id)
         {
-            var courseInstance = _courseInstanceService.GetById(id);
+            var courseInstance = await _courseInstanceService.GetByIdAsync(id);
             if(courseInstance != null)
             {
                 return Ok(courseInstance);
@@ -37,16 +38,15 @@ namespace SimpleApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CourseInstance> CreateCourseInstance([FromBody] CreateCourseInstanceRequest request)
+        public async Task<ActionResult<CourseInstance>> CreateCourseInstance([FromBody] CreateCourseInstanceRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return ValidationProblem(ModelState);
             }
-            
             try
             {
-                var newCourseInstance = _courseInstanceService.Add(request);
+                var newCourseInstance = await _courseInstanceService.AddAsync(request);
                 return CreatedAtAction(nameof(GetCourseInstance), new { id = newCourseInstance.Id }, newCourseInstance);
             }
             catch (ArgumentException ex)
@@ -56,16 +56,15 @@ namespace SimpleApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<CourseInstance> UpdateCourseInstance(int id, [FromBody] CreateCourseInstanceRequest updatedRequest)
+        public async Task<ActionResult<CourseInstance>> UpdateCourseInstance(int id, [FromBody] CreateCourseInstanceRequest updatedRequest)
         {
             if (!ModelState.IsValid)
             {
                 return ValidationProblem(ModelState);
             }
-            
             try
             {
-                var updated = _courseInstanceService.Update(id, updatedRequest);
+                var updated = await _courseInstanceService.UpdateAsync(id, updatedRequest);
                 if (updated == null) return NotFound();
                 return Ok(updated);
             }
@@ -76,11 +75,11 @@ namespace SimpleApi.Controllers
         }
 
         [HttpPatch("{id}")]
-        public ActionResult<CourseInstance> PatchCourseInstance(int id, [FromBody] CreateCourseInstanceRequest patchRequest)
+        public async Task<ActionResult<CourseInstance>> PatchCourseInstance(int id, [FromBody] CreateCourseInstanceRequest patchRequest)
         {
             try
             {
-                var patched = _courseInstanceService.Patch(id, patchRequest);
+                var patched = await _courseInstanceService.PatchAsync(id, patchRequest);
                 if (patched == null) return NotFound();
                 return Ok(patched);
             }
@@ -91,32 +90,34 @@ namespace SimpleApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteCourseInstance(int id)
+        public async Task<ActionResult> DeleteCourseInstance(int id)
         {
-            var deleted = _courseInstanceService.Delete(id);
+            var deleted = await _courseInstanceService.DeleteAsync(id);
             if (!deleted) return NotFound();
             return NoContent();
         }
 
         // Extra endpoints från tidigare uppgifter
         [HttpGet("date-range/{fromDate}/{toDate}")]
-        public ActionResult<IEnumerable<CourseInstance>> GetCourseInstancesByDateRange(DateTime fromDate, DateTime toDate)
+        public async Task<ActionResult<IEnumerable<CourseInstance>>> GetCourseInstancesByDateRange(DateTime fromDate, DateTime toDate)
         {
-            var filteredInstances = _courseInstanceService.GetAll().Where(ci => ci.StartDate >= fromDate && ci.EndDate <= toDate);
+            var allInstances = await _courseInstanceService.GetAllAsync();
+            var filteredInstances = allInstances.Where(ci => ci.StartDate >= fromDate && ci.EndDate <= toDate);
             return Ok(filteredInstances);
         }
 
         [HttpGet("student/{studentId}")]
-        public ActionResult<IEnumerable<CourseInstance>> GetCourseInstancesByStudent(int studentId)
+        public async Task<ActionResult<IEnumerable<CourseInstance>>> GetCourseInstancesByStudent(int studentId)
         {
-            var filteredInstances = _courseInstanceService.GetAll().Where(ci => ci.EnrolledStudents.Any(s => s.Id == studentId));
+            var allInstances = await _courseInstanceService.GetAllAsync();
+            var filteredInstances = allInstances.Where(ci => ci.EnrolledStudents.Any(s => s.Id == studentId));
             return Ok(filteredInstances);
         }
 
         [HttpPost("{courseInstanceId}/enroll/{studentId}")]
-        public ActionResult EnrollStudent(int courseInstanceId, int studentId)
+        public async Task<ActionResult> EnrollStudent(int courseInstanceId, int studentId)
         {
-            var success = _courseInstanceService.EnrollStudent(courseInstanceId, studentId);
+            var success = await _courseInstanceService.EnrollStudentAsync(courseInstanceId, studentId);
             if (success)
             {
                 return Ok(new { message = $"Student {studentId} enrolled in course instance {courseInstanceId}" });
@@ -125,9 +126,9 @@ namespace SimpleApi.Controllers
         }
 
         [HttpDelete("{courseInstanceId}/unenroll/{studentId}")]
-        public ActionResult UnenrollStudent(int courseInstanceId, int studentId)
+        public async Task<ActionResult> UnenrollStudent(int courseInstanceId, int studentId)
         {
-            var success = _courseInstanceService.UnenrollStudent(courseInstanceId, studentId);
+            var success = await _courseInstanceService.UnenrollStudentAsync(courseInstanceId, studentId);
             if (success)
             {
                 return Ok(new { message = $"Student {studentId} unenrolled from course instance {courseInstanceId}" });

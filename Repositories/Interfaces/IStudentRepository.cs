@@ -4,12 +4,12 @@ using SimpleApi.src.Models;
 namespace Repositories.Interfaces
 {
     public interface IStudentRepository
-{
-    List<Student> GetAllStudents();
-    Student? GetStudentById(int id);
-    Student CreateStudent(CreateStudentRequest request);
-    Student? UpdateStudent(int id, CreateStudentRequest updatedRequest);
-    Student? PatchStudent(int id, Dictionary<string, string> updates);
-    bool DeleteStudent(int id);
-}
+    {
+        Task<List<Student>> GetAllStudentsAsync();
+        Task<Student?> GetStudentByIdAsync(int id);
+        Task<Student> CreateStudentAsync(CreateStudentRequest request);
+        Task<Student?> UpdateStudentAsync(int id, CreateStudentRequest updatedRequest);
+        Task<Student?> PatchStudentAsync(int id, Dictionary<string, string> updates);
+        Task<bool> DeleteStudentAsync(int id);
+    }
 }
