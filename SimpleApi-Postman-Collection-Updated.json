@@ -1,0 +1,541 @@
+{
+	"info": {
+		"_postman_id": "simple-api-updated-collection",
+		"name": "SimpleApi Collection - Updated with Validation",
+		"description": "Updated collection with int IDs, validation support, and correct property names",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5077",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Student Controller",
+			"item": [
+				{
+					"name": "Get All Students",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/students",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students"]
+						}
+					}
+				},
+				{
+					"name": "Get Student By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/students/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students", "1"]
+						}
+					}
+				},
+				{
+					"name": "Create Student - Valid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/students",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students"]
+						}
+					}
+				},
+				{
+					"name": "Create Student - Invalid (Empty Name)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"\",\n  \"email\": \"john.doe@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/students",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students"]
+						}
+					}
+				},
+				{
+					"name": "Create Student - Invalid (No @ in Email)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doeexample.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/students",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students"]
+						}
+					}
+				},
+				{
+					"name": "Create Student - Invalid (Both Errors)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"\",\n  \"email\": \"invalid-email\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/students",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students"]
+						}
+					}
+				},
+				{
+					"name": "Update Student",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Updated\",\n  \"email\": \"john.updated@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/students/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students", "1"]
+						}
+					}
+				},
+				{
+					"name": "Patch Student",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Patched\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/students/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Student",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/students/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Course Controller",
+			"item": [
+				{
+					"name": "Get All Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses"]
+						}
+					}
+				},
+				{
+					"name": "Get Course By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/101",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses", "101"]
+						}
+					}
+				},
+				{
+					"name": "Create Course - Valid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Advanced Programming\",\n  \"description\": \"Learn advanced programming concepts\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses"]
+						}
+					}
+				},
+				{
+					"name": "Update Course",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Course Title\",\n  \"description\": \"Updated course description\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/101",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses", "101"]
+						}
+					}
+				},
+				{
+					"name": "Delete Course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/101",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses", "101"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Course Instance Controller",
+			"item": [
+				{
+					"name": "Get All Course Instances",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances"]
+						}
+					}
+				},
+				{
+					"name": "Get Course Instance By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", "1"]
+						}
+					}
+				},
+				{
+					"name": "Create Course Instance",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"startDate\": \"2024-01-15T00:00:00\",\n  \"endDate\": \"2024-05-15T00:00:00\",\n  \"courseId\": 101,\n  \"studentIds\": [1, 2, 3]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances"]
+						}
+					}
+				},
+				{
+					"name": "Update Course Instance",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"startDate\": \"2024-02-01T00:00:00\",\n  \"endDate\": \"2024-06-01T00:00:00\",\n  \"courseId\": 101,\n  \"studentIds\": [1, 2]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", "1"]
+						}
+					}
+				},
+				{
+					"name": "Get Course Instances by Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/student/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", "student", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Course Instance",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Grade Controller",
+			"item": [
+				{
+					"name": "Get All Grades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/grades",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "grades"]
+						}
+					}
+				},
+				{
+					"name": "Get Grade By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/grades/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "grades", "1"]
+						}
+					}
+				},
+				{
+					"name": "Create Grade - Valid",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"value\": \"A\",\n  \"courseInstanceId\": 1,\n  \"studentId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/grades",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "grades"]
+						}
+					}
+				},
+				{
+					"name": "Create Grade - Invalid Grade",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"value\": \"X\",\n  \"courseInstanceId\": 1,\n  \"studentId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/grades",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "grades"]
+						}
+					}
+				},
+				{
+					"name": "Create Grade - Invalid Student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"value\": \"A\",\n  \"courseInstanceId\": 1,\n  \"studentId\": 999\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/grades",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "grades"]
+						}
+					}
+				},
+				{
+					"name": "Get Grades by Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/grades/student/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "grades", "student", "1"]
+						}
+					}
+				},
+				{
+					"name": "Get Grades by Course Instance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/grades/courseinstance/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "grades", "courseinstance", "1"]
+						}
+					}
+				},
+				{
+					"name": "Create Course Instance - Valid (Future Dates)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"startDate\": \"2025-12-01T00:00:00\",\n  \"endDate\": \"2026-04-01T00:00:00\",\n  \"courseId\": 101,\n  \"studentIds\": [1, 2]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances"]
+						}
+					}
+				},
+				{
+					"name": "Create Course Instance - Invalid (Past Date)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"startDate\": \"2020-01-01T00:00:00\",\n  \"endDate\": \"2020-06-01T00:00:00\",\n  \"courseId\": 101,\n  \"studentIds\": [1, 2]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances"]
+						}
+					}
+				},
+				{
+					"name": "Create Course Instance - Invalid (End Before Start)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"startDate\": \"2025-12-01T00:00:00\",\n  \"endDate\": \"2025-11-01T00:00:00\",\n  \"courseId\": 101,\n  \"studentIds\": [1, 2]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,414 @@
+{
+	"info": {
+		"_postman_id": "simple-api-collection-updated",
+		"name": "SimpleApi Controllers Collection (Updated)",
+		"description": "Complete CRUD operations with validation - Updated for int IDs and new property names",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5077",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Student Controller",
+			"item": [
+				{
+					"name": "Get All Students",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/students",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students"]
+						}
+					}
+				},
+				{
+					"name": "Get Student By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/students/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/students",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students"]
+						}
+					}
+				},
+				{
+					"name": "Update Student",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Updated\",\n  \"email\": \"john.updated@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/students/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "student-guid-here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Student",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/students/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "student-guid-here"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Course Controller",
+			"item": [
+				{
+					"name": "Get All Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses"]
+						}
+					}
+				},
+				{
+					"name": "Get Course By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "101"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Advanced Programming\",\n  \"description\": \"Learn advanced programming concepts\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses"]
+						}
+					}
+				},
+				{
+					"name": "Update Course (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Course Title\",\n  \"description\": \"Updated course description\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "101"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Partial Update Course (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Partially Updated Title\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "101"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courses/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courses", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "101"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "CourseInstance Controller",
+			"item": [
+				{
+					"name": "Get All Course Instances",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances"]
+						}
+					}
+				},
+				{
+					"name": "Get Course Instance By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Course Instances By Date Range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/date-range/:fromDate/:toDate",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", "date-range", ":fromDate", ":toDate"],
+							"variable": [
+								{
+									"key": "fromDate",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "toDate",
+									"value": "2024-06-01"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Course Instances By Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/student/:studentId",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", "student", ":studentId"],
+							"variable": [
+								{
+									"key": "studentId",
+									"value": "student-guid-here"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Course Instance",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"startDate\": \"2024-01-15T00:00:00\",\n  \"endDate\": \"2024-05-15T00:00:00\",\n  \"courseId\": 101,\n  \"studentIds\": [\"student-guid-1\", \"student-guid-2\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances"]
+						}
+					}
+				},
+				{
+					"name": "Update Course Instance (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"startDate\": \"2024-02-01T00:00:00\",\n  \"endDate\": \"2024-06-01T00:00:00\",\n  \"courseId\": 102,\n  \"studentIds\": [\"student-guid-1\", \"student-guid-3\"]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Partial Update Course Instance (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"endDate\": \"2024-07-01T00:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Course Instance",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courseinstances/:id",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "courseinstances", ":id"],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}

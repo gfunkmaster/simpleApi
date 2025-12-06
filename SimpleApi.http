@@ -1,0 +1,249 @@
+@SimpleApi_HostAddress = http://localhost:5077
+
+# ========================================
+# STUDENTS API - Full CRUD + Search
+# ========================================
+
+### Get all students
+GET {{SimpleApi_HostAddress}}/api/Students
+Accept: application/json
+
+###
+
+### Get student by ID
+GET {{SimpleApi_HostAddress}}/api/Students/1
+Accept: application/json
+
+###
+
+### Create new student
+POST {{SimpleApi_HostAddress}}/api/Students
+Content-Type: application/json
+
+{
+  "name": "New Student",
+  "email": "newstudent@example.com",
+  "address": {
+    "street": "123 Main St",
+    "city": "Stockholm",
+    "zipCode": "12345"
+  }
+}
+
+###
+
+### Update student
+PUT {{SimpleApi_HostAddress}}/api/Students/1
+Content-Type: application/json
+
+{
+  "name": "Updated Name",
+  "email": "updated@example.com",
+  "address": {
+    "street": "456 Updated St",
+    "city": "Göteborg", 
+    "zipCode": "54321"
+  }
+}
+
+###
+
+### Delete student
+DELETE {{SimpleApi_HostAddress}}/api/Students/1
+Accept: application/json
+
+###
+
+### Search students by name
+GET {{SimpleApi_HostAddress}}/api/Students/search/John
+Accept: application/json
+
+###
+
+# ========================================
+# COURSES API - Full CRUD
+# ========================================
+
+### Get all courses
+GET {{SimpleApi_HostAddress}}/api/Courses
+Accept: application/json
+
+###
+
+### Get course by ID
+GET {{SimpleApi_HostAddress}}/api/Courses/1
+Accept: application/json
+
+###
+
+### Create new course
+POST {{SimpleApi_HostAddress}}/api/Courses
+Content-Type: application/json
+
+{
+  "title": "New Course",
+  "description": "Description of the new course"
+}
+
+###
+
+### Update course
+PUT {{SimpleApi_HostAddress}}/api/Courses/1
+Content-Type: application/json
+
+{
+  "title": "Updated Course Title",
+  "description": "Updated description"
+}
+
+###
+
+### Delete course
+DELETE {{SimpleApi_HostAddress}}/api/Courses/1
+Accept: application/json
+
+###
+
+# ========================================
+# COURSE INSTANCES API - Full CRUD + Enrollment + Search
+# ========================================
+
+### Get all course instances
+GET {{SimpleApi_HostAddress}}/api/CourseInstances
+Accept: application/json
+
+###
+
+### Get course instance by ID (with enrolled students)
+GET {{SimpleApi_HostAddress}}/api/CourseInstances/1
+Accept: application/json
+
+###
+
+### Create new course instance
+POST {{SimpleApi_HostAddress}}/api/CourseInstances
+Content-Type: application/json
+
+{
+  "startDate": "2025-12-15T00:00:00",
+  "endDate": "2026-05-15T00:00:00",
+  "courseId": 1
+}
+
+###
+
+### Update course instance
+PUT {{SimpleApi_HostAddress}}/api/CourseInstances/1
+Content-Type: application/json
+
+{
+  "startDate": "2025-12-20T00:00:00",
+  "endDate": "2026-06-20T00:00:00",
+  "courseId": 2
+}
+
+###
+
+### Delete course instance
+DELETE {{SimpleApi_HostAddress}}/api/CourseInstances/1
+Accept: application/json
+
+###
+
+### Get course instances by date range
+GET {{SimpleApi_HostAddress}}/api/CourseInstances/date-range/2025-12-01T00:00:00/2026-01-31T00:00:00
+Accept: application/json
+
+###
+
+### Get course instances for specific student
+GET {{SimpleApi_HostAddress}}/api/CourseInstances/student/1
+Accept: application/json
+
+###
+
+# ========================================
+# ENROLLMENT API - Many-to-Many Management
+# ========================================
+
+### Enroll student 1 in course instance 1
+POST {{SimpleApi_HostAddress}}/api/CourseInstances/1/enroll/1
+Accept: application/json
+
+###
+
+### Enroll student 2 in course instance 1
+POST {{SimpleApi_HostAddress}}/api/CourseInstances/1/enroll/2
+Accept: application/json
+
+###
+
+### Enroll student 3 in course instance 2
+POST {{SimpleApi_HostAddress}}/api/CourseInstances/2/enroll/3
+Accept: application/json
+
+###
+
+### Unenroll student 1 from course instance 1
+DELETE {{SimpleApi_HostAddress}}/api/CourseInstances/1/unenroll/1
+Accept: application/json
+
+###
+
+# ========================================
+# GRADES API - Full CRUD with Relationships
+# ========================================
+
+### Get all grades (with nested student and course info)
+GET {{SimpleApi_HostAddress}}/api/Grades
+Accept: application/json
+
+###
+
+### Get grade by ID
+GET {{SimpleApi_HostAddress}}/api/Grades/1
+Accept: application/json
+
+###
+
+### Create new grade
+POST {{SimpleApi_HostAddress}}/api/Grades
+Content-Type: application/json
+
+{
+  "value": "A",
+  "studentId": 1,
+  "courseInstanceId": 1
+}
+
+###
+
+### Update grade
+PUT {{SimpleApi_HostAddress}}/api/Grades/1
+Content-Type: application/json
+
+{
+  "value": "A+",
+  "studentId": 1,
+  "courseInstanceId": 1
+}
+
+###
+
+### Delete grade
+DELETE {{SimpleApi_HostAddress}}/api/Grades/1
+Accept: application/json
+
+###
+
+### Get grades by student ID
+GET {{SimpleApi_HostAddress}}/api/Grades/student/1
+Accept: application/json
+
+###
+
+### Get grades by course instance ID
+GET {{SimpleApi_HostAddress}}/api/Grades/courseinstance/1
+Accept: application/json
+
+###
