@@ -5,14 +5,9 @@ using Repositories.Interfaces;
 
 namespace Services
 {
-    public class CourseInstanceService
+    public class CourseInstanceService(ICourseInstanceRepository courseInstanceRepository)
     {
-        private readonly ICourseInstanceRepository _courseInstanceRepository;
-
-        public CourseInstanceService(ICourseInstanceRepository courseInstanceRepository)
-        {
-            _courseInstanceRepository = courseInstanceRepository;
-        }
+        private readonly ICourseInstanceRepository _courseInstanceRepository = courseInstanceRepository;
 
         public async Task<List<CourseInstance>> GetAllAsync()
         {

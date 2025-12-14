@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SimpleApi.Repositories
 {
-    public class EFGradeRepository : IGradeRepository
+    public class EFGradeRepository(ApplicationDbContext context) : IGradeRepository
     {
-        private readonly ApplicationDbContext _context;
-
-        public EFGradeRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        private readonly ApplicationDbContext _context = context;
 
         public async Task<List<Grade>> GetAllAsync()
         {

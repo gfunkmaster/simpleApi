@@ -1,14 +1,19 @@
 {
 	"info": {
 		"_postman_id": "simple-api-updated-collection",
-		"name": "SimpleApi Collection - Updated with Validation",
-		"description": "Updated collection with int IDs, validation support, and correct property names",
+		"name": "SimpleApi Collection - Updated with Identity & Middleware",
+		"description": "Updated collection for ApplicationUser, IsActive, JWT, and middleware-protected endpoints.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"variable": [
 		{
 			"key": "baseUrl",
 			"value": "http://localhost:5077",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "",
 			"type": "string"
 		}
 	],
@@ -17,10 +22,13 @@
 			"name": "Student Controller",
 			"item": [
 				{
-					"name": "Get All Students",
+					"name": "Get All Students (JWT Required)",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{access_token}}"}
+						],
 						"url": {
 							"raw": "{{baseUrl}}/api/students",
 							"host": ["{{baseUrl}}"],
@@ -29,14 +37,32 @@
 					}
 				},
 				{
-					"name": "Get Student By ID",
+					"name": "Get Student By ID (JWT Required)",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{access_token}}"}
+						],
 						"url": {
 							"raw": "{{baseUrl}}/api/students/1",
 							"host": ["{{baseUrl}}"],
 							"path": ["api", "students", "1"]
+						}
+					}
+				},
+				{
+					"name": "Get Profile (JWT Required)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{access_token}}"}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/students/profile",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students", "profile"]
 						}
 					}
 				},
@@ -181,13 +207,16 @@
 			]
 		},
 		{
-			"name": "Course Controller",
+			"name": "Course Controller (ActiveUserMiddleware)",
 			"item": [
 				{
-					"name": "Get All Courses",
+					"name": "Get All Courses (JWT, ActiveUser)",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{access_token}}"}
+						],
 						"url": {
 							"raw": "{{baseUrl}}/api/courses",
 							"host": ["{{baseUrl}}"],
@@ -196,10 +225,13 @@
 					}
 				},
 				{
-					"name": "Get Course By ID",
+					"name": "Get Course By ID (JWT, ActiveUser)",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Authorization", "value": "Bearer {{access_token}}"}
+						],
 						"url": {
 							"raw": "{{baseUrl}}/api/courses/101",
 							"host": ["{{baseUrl}}"],
@@ -552,9 +584,9 @@
 							"raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Test123!\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/identity/register",
+							"raw": "{{baseUrl}}/register",
 							"host": ["{{baseUrl}}"],
-							"path": ["identity", "register"]
+							"path": ["register"]
 						}
 					}
 				},
@@ -570,14 +602,92 @@
 							"raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Test123!\"\n}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/identity/login",
+							"raw": "{{baseUrl}}/login?useCookies=false",
 							"host": ["{{baseUrl}}"],
-							"path": ["identity", "login"]
+							"path": ["login"],
+							"query": [
+								{ "key": "useCookies", "value": "false" }
+							]
+						}
+					}
+				},
+				{
+					"name": "Get User Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{access_token}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/user/status",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "user", "status"]
 						}
 					}
 				},
 				{
 					"name": "Get All Students (JWT Required)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{access_token}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/students",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students"]
+						}
+					}
+				},
+				{
+					"name": "Deactivate User (Test Middleware)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{access_token}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/user/deactivate",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "user", "deactivate"]
+						}
+					}
+				},
+				{
+					"name": "Get Students After Deactivation (Should Fail 403)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{access_token}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/students",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "students"]
+						}
+					}
+				},
+				{
+					"name": "Activate User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Accept", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{access_token}}" }
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/user/activate",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "user", "activate"]
+						}
+					}
+				},
+				{
+					"name": "Get Students After Activation (Should Work)",
 					"request": {
 						"method": "GET",
 						"header": [

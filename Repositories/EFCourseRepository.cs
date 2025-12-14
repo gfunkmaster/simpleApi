@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SimpleApi.Repositories
 {
-    public class EFCourseRepository : ICourseRepository
+    public class EFCourseRepository(ApplicationDbContext context) : ICourseRepository
     {
-        private readonly ApplicationDbContext _context;
-
-        public EFCourseRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        private readonly ApplicationDbContext _context = context;
 
         public async Task<List<Course>> GetAllAsync()
         {

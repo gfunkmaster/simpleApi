@@ -253,7 +253,7 @@ Accept: application/json
 # ========================================
 
 ### Register new user
-POST {{SimpleApi_HostAddress}}/identity/register
+POST {{SimpleApi_HostAddress}}/register
 Content-Type: application/json
 
 {
@@ -265,7 +265,7 @@ Content-Type: application/json
 
 ### Login user and get JWT token
 # @name login
-POST {{SimpleApi_HostAddress}}/identity/login
+POST {{SimpleApi_HostAddress}}/login?useCookies=false
 Content-Type: application/json
 
 {
@@ -274,10 +274,49 @@ Content-Type: application/json
 }
 
 ###
+
+### Get user status
+GET {{SimpleApi_HostAddress}}/api/User/status
+Accept: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
+
+###
+
 ### Get all students (JWT required)
 GET {{SimpleApi_HostAddress}}/api/Students
 Accept: application/json
 Authorization: Bearer {{login.response.body.accessToken}}
 
 ###
+
+# ========================================
+# MIDDLEWARE TESTING - Active User Check
+# ========================================
+
+### Deactivate current user (sets IsActive = false)
+POST {{SimpleApi_HostAddress}}/api/User/deactivate
+Accept: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
+
+###
+
+### Try to access students after deactivation (should return 403)
+GET {{SimpleApi_HostAddress}}/api/Students
+Accept: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
+
+###
+
+### Activate current user (sets IsActive = true)
+POST {{SimpleApi_HostAddress}}/api/User/activate
+Accept: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
+
+###
+
+### Try to access students after activation (should work)
+GET {{SimpleApi_HostAddress}}/api/Students
+Accept: application/json
+Authorization: Bearer {{login.response.body.accessToken}}
+
 ###

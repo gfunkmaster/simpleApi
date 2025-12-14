@@ -15,9 +15,9 @@ namespace SimpleApi.Controllers
     {
 
     private readonly StudentServices _studentService;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public StudentsController(StudentServices studentService, UserManager<IdentityUser> userManager)
+    public StudentsController(StudentServices studentService, UserManager<ApplicationUser> userManager)
     {
         _studentService = studentService;
         _userManager = userManager;
@@ -30,8 +30,17 @@ namespace SimpleApi.Controllers
             var students = await _studentService.GetAllStudentsAsync();
             return Ok(students);
         }
-        [AllowAnonymous]
-        [HttpGet("{id}")]
+/// <summary>
+    /// Hämtar en specifik student baserat på ID
+    /// </summary>
+    /// <param name="id">Student ID</param>
+    /// <returns>Student objekt</returns>
+    /// <response code="200">Returnerar studenten</response>
+    /// <response code="404">Student hittades inte</response>
+    [AllowAnonymous]
+    [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Student>> GetStudent(int id)
         {
             var student = await _studentService.GetStudentByIdAsync(id);
@@ -45,7 +54,17 @@ namespace SimpleApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Hämtar inloggad användares profil med claims och kopplad student
+        /// </summary>
+        /// <returns>Användarinformation och claims</returns>
+        /// <response code="200">Returnerar användarens profil</response>
+        /// <response code="401">Användaren är inte autentiserad</response>
+        /// <response code="404">Användaren hittades inte</response>
         [HttpGet("profile")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> GetProfile()
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type.EndsWith("nameidentifier"))?.Value;
@@ -68,7 +87,18 @@ namespace SimpleApi.Controllers
             });
         }
 
+        /// <summary>
+        /// Skapar en ny student
+        /// </summary>
+        /// <param name="request">Studentinformation</param>
+        /// <returns>Den skapade studenten</returns>
+        /// <response code="201">Student skapad</response>
+        /// <response code="400">Ogiltig data</response>
+        /// <response code="401">Användaren är inte autentiserad</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<Student>> CreateStudent([FromBody] CreateStudentRequest request)
         {
             if (!ModelState.IsValid)

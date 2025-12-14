@@ -4,14 +4,9 @@ using Repositories.Interfaces;
 
 namespace Services
 {
-    public class StudentServices
+    public class StudentServices(IStudentRepository studentRepository)
     {
-        private readonly IStudentRepository _studentRepository;
-
-        public StudentServices(IStudentRepository studentRepository)
-        {
-            _studentRepository = studentRepository;
-        }
+        private readonly IStudentRepository _studentRepository = studentRepository;
 
         public async Task<List<Student>> GetAllStudentsAsync()
         {

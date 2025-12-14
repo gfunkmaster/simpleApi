@@ -3,14 +3,9 @@ using Repositories.Interfaces;
 
 namespace Services
 {
-    public class GradeService
+    public class GradeService(IGradeRepository gradeRepository)
     {
-        private readonly IGradeRepository _gradeRepository;
-
-        public GradeService(IGradeRepository gradeRepository)
-        {
-            _gradeRepository = gradeRepository;
-        }
+        private readonly IGradeRepository _gradeRepository = gradeRepository;
 
         public async Task<List<Grade>> GetAllAsync()
         {

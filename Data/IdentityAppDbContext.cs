@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SimpleApi.Data
 {
-    public class IdentityAppDbContext : IdentityDbContext<IdentityUser>
+    using SimpleApi.src.Models;
+    public class IdentityAppDbContext : IdentityDbContext<ApplicationUser>
     {
     public IdentityAppDbContext(DbContextOptions<IdentityAppDbContext> options)
         : base(options)

@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SimpleApi.Repositories
 {
-    public class EFStudentRepository : IStudentRepository
+    public class EFStudentRepository(ApplicationDbContext context) : IStudentRepository
     {
-        private readonly ApplicationDbContext _context;
-
-        public EFStudentRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        private readonly ApplicationDbContext _context = context;
 
         public async Task<List<Student>> GetAllStudentsAsync()
         {
